@@ -8,7 +8,20 @@
 
 using namespace std;
 
-// gestionarea produselor
+// clasă abstractă care îmi definește interacțiunile cu CSV-urile
+class Handler {
+private:
+    string file_path;
+public:
+    virtual ~Handler() = default;
+
+    Handler(const string& file_path_in){
+        file_path = file_path_in;
+    }
+    virtual void parse_data() = 0;
+    virtual void write_to_file() = 0;
+
+};
 
 class Product{
 private:
@@ -124,18 +137,19 @@ public:
     }
 };
 // clasă care citește și stochează datele despre produse, și care gestionează stocurile
-class ProductHandler {
+class ProductHandler : public Handler{
 private:
     string file_path;
     vector<Product> products;
 public:
 
-    explicit ProductHandler(const string &file_path_in){
+    explicit ProductHandler(const string &file_path_in): Handler(file_path_in) {
         this->file_path = file_path_in;
-        parse_data();
+        ProductHandler::parse_data();
     }
+
     ~ProductHandler(){
-        write_to_file();
+        ProductHandler::write_to_file();
     }
 
     Product parse_data_element(const vector<string> &data_el){
@@ -152,7 +166,7 @@ public:
         return Product(name, code, price, cost, is_stockable, stock);
     }
 
-    void parse_data() {
+    void parse_data() override {
         CSVInputHandler csv_handler(file_path);
         vector<vector<string>> data = csv_handler.get_data();
         for(int i=0; i<data.size(); i++){
@@ -160,7 +174,7 @@ public:
         }
     }
 
-    void write_to_file() {
+    void write_to_file() override {
         CSVInputHandler csv_handler(file_path);
         vector<vector<string>> data_in;
 
@@ -313,6 +327,93 @@ public:
     void display_information() {
         cout<<"Nume: "<<name<<endl;
         cout<<"Nr. comenzi anterioare: "<<previous_orders<<endl;
+    }
+};
+class CustomerHandler: public Handler {
+private:
+    string file_path;
+    vector<Customer> customers;
+public:
+    CustomerHandler(const string &file_path_in): Handler(file_path_in) {
+        this->file_path = file_path_in;
+        CustomerHandler::parse_data();
+    }
+    Customer parse_data_element(const vector<string> &data_el){
+        if(data_el.size() != 2){
+            cout<<"Prea multe câmpuri pentru client. Datele au fost introduse incorect."<<endl;
+            throw 1;
+        }
+        const string name = data_el[0];
+        const int previous_orders = stoi(data_el[1]);
+        return Customer(name, previous_orders);
+    }
+
+    void parse_data() override{
+        CSVInputHandler csv_handler(file_path);
+        vector<vector<string>> data = csv_handler.get_data();
+        for(int i=0; i<data.size(); i++){
+            customers.push_back(parse_data_element(data[i]));
+        }
+    }
+    void write_to_file() override {
+        CSVInputHandler csv_handler(file_path);
+        vector<vector<string>> data_in;
+
+        for (int i=0; i<customers.size(); i++) {
+            data_in.push_back(customers[i].customer_to_data());
+        }
+
+        csv_handler.lines_from_data(data_in);
+    }
+
+    int search_customer(string const &name, bool const display=false) {
+        for (int i=0; i<customers.size(); i++) {
+            if (customers[i].get_name() == name) {
+                if (display) {
+                    cout<<"Clientul a fost găsit!"<<endl;
+                    customers[i].display_information();
+                }
+                return i;
+            }
+        }
+        if (display) {
+            cout<<"Eroare! Clientul nu a putut fi găsit!"<<endl;
+        }
+        return -1;
+    }
+
+    void add_customer(string const &name) {
+        // în mod normal, nu ar trb să se poată ajunge la if-ul ăsta
+        if (search_customer(name) != -1) {
+            cout<<"Clientul există deja în baza de date!"<<endl;
+            throw 2;
+        }
+        customers.push_back(Customer(name));
+    }
+
+    float get_discount(string const &name) {
+        int customer_index = search_customer(name);
+        if (customer_index==-1) {
+            cout<<"Clientul \""<<name<<"\" nu a putut fi găsit!"<<endl;
+            throw 6;
+        }
+        // 10% reducere pentru >= comenzi, 15% pentru >= 20
+        if (customers[customer_index].get_previous_orders()>=20) {
+            return 0.2;
+        }
+        if (customers[customer_index].get_previous_orders()>=10) {
+            return 0.1;
+        }
+    }
+
+    void add_order(string const &name) {
+        int customer_index = search_customer(name);
+        if (customer_index==-1) {
+            cout<<"Clientul \""<<name<<"\" nu a putut fi găsit!"<<endl;
+            throw 6;
+        }
+
+        customers[customer_index].increment_orders();
     }
 };
 
