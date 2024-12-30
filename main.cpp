@@ -272,6 +272,108 @@ public:
     }
 };
 
+
+//              CLIENȚI ȘI GESTIONAREA COMENZILOR
+class Customer {
+private:
+    string name;
+    // numărul de comenzi date de client, pentru a putea aplica reduceri
+    int previous_orders;
+
+public:
+    explicit Customer(const string &name_in){
+        name = name_in;
+        previous_orders = 0;
+    }
+    Customer(const string &name_in, const int previous_orders_in){
+        name = name_in;
+        previous_orders = previous_orders_in;
+    }
+    void set_previous_orders(const int previous_orders_in){
+        previous_orders = previous_orders_in;
+    }
+    string get_name() {
+        return name;
+    }
+    int get_previous_orders(){
+        return previous_orders;
+    }
+    void increment_orders(){
+        previous_orders++;
+    }
+
+    vector<string> customer_to_data() {
+        vector<string> data;
+        data.push_back(name);
+        data.push_back(to_string(previous_orders));
+
+        return data;
+    }
+
+    void display_information() {
+        cout<<"Nume: "<<name<<endl;
+        cout<<"Nr. comenzi anterioare: "<<previous_orders<<endl;
+    }
+};
+
+class Order {
+private:
+    int order_id;
+    string customer_name;
+    string order_date;
+    vector<string> products;
+    float gross_price;
+    // discountul de loialitate; float între 0 și 1
+    float loyalty_discount;
+    // prețul după discount
+    float net_price;
+
+public:
+    Order(int order_id_in, const string &customer_name_in, const string &order_date_in, const vector<string> &products_in, const float gross_price_in, const float loyalty_discount_in){
+        order_id = order_id_in;
+        customer_name = customer_name_in;
+        order_date = order_date_in;
+        products = products_in;
+        gross_price = gross_price_in;
+        loyalty_discount = loyalty_discount_in;
+        net_price = gross_price - loyalty_discount*gross_price;
+    }
+    void display_information() {
+        cout<<"Order ID: "<<order_id<<endl;
+        cout<<"Customer: "<<customer_name<<endl;
+        cout<<"Order date: "<<order_date<<endl;
+        cout<<"Products: ";
+        for (int i=0; i<products.size(); i++) {
+            cout<<products[i]<<", ";
+        }
+        cout<<endl;
+        cout<<"Gross price: "<<gross_price<<endl;
+        cout<<"Loyalty discount: "<<loyalty_discount*100<<"%"<<endl;
+        cout<<"Net price: "<<net_price<<endl;
+    }
+
+    vector<string> order_to_data() {
+        vector<string>data;
+        data.push_back(to_string(order_id));
+        data.push_back(customer_name);
+        data.push_back(order_date);
+        string product_str;
+        for (int i=0; i<products.size(); i++) {
+            product_str+=products[i];
+            if (i!=products.size()-1) {
+                product_str+="-";
+            }
+        }
+        data.push_back(product_str);
+        data.push_back(to_string(gross_price));
+        data.push_back(to_string(loyalty_discount));
+        data.push_back(to_string(net_price));
+
+        return data;
+
+    }
+
+};
 int main(){
     string data_path = "./data/";
 
