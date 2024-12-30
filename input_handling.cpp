@@ -13,7 +13,6 @@ using namespace std;
 class CSVInputHandler{
         private:
             string file_path;
-            string delimiter;
             // în obiectul de input în sine păstrez liniile din fișier, nu datele
             // așa (mi se pare că) am mai mult control asupra modului în care datele sunt scrise în fișier
             vector<string> lines;
@@ -23,9 +22,8 @@ class CSVInputHandler{
         // deci majoritatea claselor vor primi acel vector de date, vor face procesările lor, îl vor returna obiectului de CSV, care va scrie datele în fișierul dorit
         public:
 
-        CSVInputHandler(const string &file_path_in, const string &delimiter_in){
+        CSVInputHandler(const string &file_path_in){
             this->file_path = file_path_in;
-            this->delimiter = delimiter_in;
 
             read_lines();
         }
@@ -82,7 +80,7 @@ class CSVInputHandler{
             return data;
         }
 
-        // asta e utilă pentru a pune mai multe date deodată
+        // am nevoie de funcția asta pentru a putea scrie datele în fișier
         void lines_from_data(vector<vector<string>> data){
             vector<string> lines_temp;
             for(int i=0; i<data.size(); i++){
