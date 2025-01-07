@@ -1445,6 +1445,50 @@ public:
     }
 };
 
+class FinancialReportHandler: public Handler {
+private:
+    string report_file_path;
+    vector<FinancialReport> reports;
+public:
+    FinancialReportHandler(const string &file_path_in): Handler(file_path_in) {
+        report_file_path = file_path+"/reports.csv";
+        FinancialReportHandler::parse_data();
+    }
+    ~FinancialReportHandler() override{
+        FinancialReportHandler::write_to_file();
+    }
+    FinancialReport parse_data_element(const vector<string> &data_el){
+        if(data_el.size() != 5){
+            cout<<"Prea multe câmpuri pentru raport. Datele au fost introduse incorect."<<endl;
+            throw 1;
+        }
+        const float wages = stof(data_el[0]);
+        const float product_costs = stof(data_el[1]);
+        const float product_revenues = stof(data_el[2]);
+        const float event_revenues = stof(data_el[3]);
+        const float event_costs = stof(data_el[4]);
+        return FinancialReport(wages, product_costs, product_revenues, event_revenues, event_costs);
+    }
+
+    void parse_data() override{
+        CSVInputHandler csv_handler(report_file_path);
+        vector<vector<string>> data = csv_handler.get_data();
+        for(int i=0; i<data.size(); i++){
+            reports.push_back(parse_data_element(data[i]));
+        }
+    }
+
+    void write_to_file() override {
+        CSVInputHandler csv_handler(report_file_path);
+        vector<vector<string>> data_in;
+        for (int i=0; i<reports.size(); i++) {
+            data_in.push_back(reports[i].report_to_data());
+        }
+
+        csv_handler.lines_from_data(data_in);
+    }
+};
+
 int main(){
     string data_path = "./data/";
 
