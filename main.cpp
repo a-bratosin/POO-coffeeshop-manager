@@ -43,7 +43,7 @@ bool
 is_valid_date(std::string date)
 {
     std::istringstream in{std::move(date)};
-    std::chrono::year_month_day ymd;
+    std::chrono::year_month_day ymd{};
     in >> std::chrono::parse("%d/%m/%Y", ymd);
     return !in.fail();
 }
@@ -100,11 +100,20 @@ private:
     float pay = 0.0;
     // vector de orele de lucru ale angajatului, pentru fiecare zi a săptămânii
     // perechea reprezintă intervalul de ore de lucru
-    pair<int, int> hours[7];
+    array<pair<int, int>,7> hours;
 
 
 
 public:
+    const string get_name() {
+        return this->name;
+    }
+    const float get_pay() {
+        return this->pay;
+    }
+    array<pair<int,int>,7> get_hours() {
+        return hours;
+    }
     Employee() {
         name = "Necunoscut";
         pay = 0.0;
@@ -112,7 +121,7 @@ public:
             hours[i] = make_pair(0, 0);
         }
     }
-    Employee(const string &name_in, float pay_in, pair<int, int> hours_in[7]){
+    Employee(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in){
         name = name_in;
         pay = pay_in;
         for (int i=0; i<7; i++) {
@@ -120,6 +129,14 @@ public:
         }
     }
 
+    Employee( const Employee & other) {
+        this->name = other.name;
+        this->pay = other.pay;
+        for (int i=0; i<7; i++) {
+            this->hours[i] = other.hours[i];
+        }
+
+    }
     virtual ~Employee() = default;
 
     void display_information() {
@@ -131,6 +148,7 @@ public:
         }
     }
     virtual void display_role() = 0;
+    virtual string get_role() = 0;
 
     void display_full_information() {
         display_information();
@@ -155,13 +173,6 @@ public:
     };
     virtual vector<string> employee_to_data() = 0;
 
-    vector<pair<int,int>> get_hours() {
-        vector<pair<int,int>> hours_vec;
-        for (int i=0; i<7; i++) {
-            hours_vec.push_back(hours[i]);
-        }
-        return hours_vec;
-    }
 
     float get_hourly_pay() {
         return pay;
@@ -191,20 +202,25 @@ public:
         return (hours[weekday-1].second - hours[weekday-1].first)*pay;
     }
 
-    string get_name() {
-        return name;
-    }
+
 };
 
 class Barista : public Employee {
+private:
+    string role = "barista";
 public:
-    Barista(const string &name_in, float pay_in, pair<int, int> hours_in[7]) : Employee(name_in, pay_in, hours_in) {
+    Barista(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) : Employee(name_in, pay_in, hours_in) {
+
+    }
+    Barista (const Barista & other) : Employee(other) {
 
     }
     void display_role() override {
         cout<<"Rol: Barista"<<endl;
     }
-
+    string get_role() {
+        return "barista";
+    }
     vector<string> employee_to_data() override {
         vector<string> data = partial_employee_to_data();
 
@@ -216,13 +232,17 @@ public:
 
 class Manager : public Employee {
 public:
-    Manager(const string &name_in, float pay_in, pair<int, int> hours_in[7]) : Employee(name_in, pay_in, hours_in) {
+    Manager(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) : Employee(name_in, pay_in, hours_in) {
 
     }
+    Manager(const Manager &other) : Employee(other){}
     void display_role() override {
         cout<<"Rol: Manager"<<endl;
     }
 
+    string get_role() {
+        return "manager";
+    }
     vector<string> employee_to_data() override {
         vector<string> data = partial_employee_to_data();
 
@@ -234,13 +254,17 @@ public:
 
 class Waiter : public Employee {
 public:
-    Waiter(const string &name_in, float pay_in, pair<int, int> hours_in[7]) : Employee(name_in, pay_in, hours_in) {
+    Waiter(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) : Employee(name_in, pay_in, hours_in) {
 
     }
+    Waiter(const Waiter &other) : Employee(other){}
+
     void display_role() override {
         cout<<"Rol: Ospătar"<<endl;
     }
-
+    string get_role() {
+        return "waiter";
+    }
     vector<string> employee_to_data() override {
         vector<string> data = partial_employee_to_data();
 
@@ -254,36 +278,54 @@ class EmployeeCreator {
 public:
     virtual ~EmployeeCreator() = default;
 
-    virtual Employee* create_employee(const string &name_in, float pay_in, pair<int, int> hours_in[7]) = 0;
+    virtual Employee* create_employee(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) = 0;
+
 };
 
 class BaristaCreator : public EmployeeCreator {
 public:
-    Employee* create_employee(const string &name_in, float pay_in, pair<int, int> hours_in[7]) override {
+    Employee* create_employee(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) override {
         return new Barista(name_in, pay_in, hours_in);
+    }
+
+    Employee* create_employee(Employee& employee) {
+        string name = employee.get_name();
+        const Barista temp = Barista(employee.get_name(),employee.get_pay(), employee.get_hours());
+        return new Barista(temp);
     }
 };
 
 class ManagerCreator : public EmployeeCreator {
 public:
-    Employee* create_employee(const string &name_in, float pay_in, pair<int, int> hours_in[7]) override {
+    Employee* create_employee(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) override {
         return new Manager(name_in, pay_in, hours_in);
+    }
+    Employee* create_employee(Employee& employee) {
+        string name = employee.get_name();
+        const Manager temp(employee.get_name(),employee.get_pay(), employee.get_hours());
+        return new Manager(temp);
     }
 };
 
 class WaiterCreator : public EmployeeCreator {
 public:
-    Employee* create_employee(const string &name_in, float pay_in, pair<int, int> hours_in[7]) override {
+    Employee* create_employee(const string &name_in, float pay_in, array<pair<int, int>,7> hours_in) override {
         return new Waiter(name_in, pay_in, hours_in);
+    }
+    Employee* create_employee(Employee& employee) {
+        string name = employee.get_name();
+        Waiter temp(employee.get_name(),employee.get_pay(), employee.get_hours());
+        return new Waiter(temp);
     }
 };
 
 class EmployeeHandler : public Handler {
 private:
     string employee_file_path;
-    vector<Employee*> employees;
+
 
 public:
+    vector<Employee*> employees;
     explicit EmployeeHandler(const string &file_path_in): Handler(file_path_in) {
         employee_file_path = file_path+"/employees.csv";
         EmployeeHandler::parse_data();
@@ -291,6 +333,10 @@ public:
 
     ~EmployeeHandler() override{
         EmployeeHandler::write_to_file();
+
+        for (int i=0; i <employees.size(); i++) {
+            delete employees[i];
+        }
     }
 
     Employee* parse_data_element(const vector<string> &data_el){
@@ -300,7 +346,7 @@ public:
         }
         const string name = data_el[1];
         const float pay = stof(data_el[2]);
-        pair<int, int> hours[7];
+        array<pair<int, int>,7> hours;
         string hours_string = data_el[3];
         istringstream in(hours_string);
         string hour;
@@ -365,7 +411,7 @@ public:
         float pay;
         cin>>pay;
         cin.ignore();
-        pair<int, int> hours[7];
+        array<pair<int, int>,7> hours;
         cout<<"Introduceți orele de lucru ale angajatului, sub forma de interval de ore, pentru fiecare zi a săptămânii: "<<endl;
         for (int i=0; i<7; i++) {
             cout<<"Ziua "<<i+1<<": ";
@@ -404,6 +450,30 @@ public:
 
 
     }
+    // aici returnează o copie a vectorului
+    // are memory leak
+    /*
+    vector<Employee *> get_employees() {
+        vector<Employee*> new_vector;
+
+        BaristaCreator barista_creator;
+        ManagerCreator manager_creator;
+        WaiterCreator waiter_creator;
+
+        for (int i=0; i<this->employees.size(); i++) {
+            if (this->employees[i]->get_role()=="barista") {
+                // TODO: fix memory leak
+                new_vector.push_back(barista_creator.create_employee(this->employees[i]));
+            }   else if (this->employees[i]->get_role()=="manager") {
+                new_vector.push_back(manager_creator.create_employee(*this->employees[i]));
+            }   else if (this->employees[i]->get_role()=="waiter") {
+                new_vector.push_back(waiter_creator.create_employee(*this->employees[i]));
+            }
+
+        }
+        return new_vector;
+    }
+    */
 
     Employee *search_employee(string name, bool display) {
         for (int i=0; i<employees.size(); i++) {
@@ -464,7 +534,7 @@ public:
         price = price_in;
         cost = cost_in;
         is_stockable = is_stockable_in;
-        cout<<cost<<"  "<<cost_in<<endl;
+        //cout<<cost<<"  "<<cost_in<<endl;
 
         if ((is_stockable_in == false) && (stock_in != -1)) {
             cout<<"Ați introdus un stoc pentru produs, cu toate că produsul nu are stoc definit. Acesta va fi ignorat."<<endl;
@@ -567,7 +637,7 @@ public:
         ProductHandler::parse_data();
     }
 
-    ~ProductHandler(){
+    ~ProductHandler() override{
         ProductHandler::write_to_file();
     }
 
@@ -661,6 +731,9 @@ public:
         products.erase(products.begin() + index);
     }
 
+    Product get_product(int index) {
+        return this->products[index];
+    }
     // aici returnează prețul produsului, în scopul calculării totalului în clasa comenzii
     float purchase_product(const string &name) {
         int product_index = search_product(name);
@@ -757,7 +830,7 @@ public:
         customer_file_path = file_path+"/customers.csv";
         CustomerHandler::parse_data();
     }
-    ~CustomerHandler() {
+    ~CustomerHandler() override{
         CustomerHandler::write_to_file();
     }
     Customer parse_data_element(const vector<string> &data_el){
@@ -878,6 +951,9 @@ public:
         loyalty_discount = loyalty_discount_in;
         net_price = net_price_in;
     }
+    string get_date() {
+        return this->order_date;
+    }
     void display_information() {
         cout<<"Order ID: "<<order_id<<endl;
         cout<<"Customer: "<<customer_name<<endl;
@@ -913,6 +989,9 @@ public:
         return data;
 
     }
+    vector<string> get_product_names() {
+        return products;
+    }
 
 };
 
@@ -925,7 +1004,7 @@ public:
         order_file_path = file_path+"/orders.csv";
         OrderHandler::parse_data();
     }
-    ~OrderHandler() {
+    ~OrderHandler() override{
         OrderHandler::write_to_file();
     }
     Order parse_data_from_element(const vector<string> &data_el){
@@ -1024,6 +1103,17 @@ public:
         orders.push_back(Order(order_id, customer_name, order_date, product_count, products, gross_price, loyalty_discount, net_price));
     }
 
+    // funcție care returnează toate comenzile făcute într-o anumită zi
+    vector<Order> get_orders_by_date(string date) {
+        vector<Order> orders;
+        for (int i=0; i<orders.size(); i++) {
+            if (orders[i].get_date() == date) {
+                orders.push_back(orders[i]);
+            }
+        }
+
+        return orders;
+    }
 };
 
 class Event {
@@ -1091,7 +1181,12 @@ public:
     int get_ticket_count() {
         return ticket_count;
     }
-
+    float get_misc_costs() {
+        return misc_costs;
+    }
+    float get_marketing_costs() {
+        return marketing_costs;
+    }
 };
 
 class EventHandler: public Handler {
@@ -1103,7 +1198,7 @@ public:
         event_file_path = file_path+"/events.csv";
         EventHandler::parse_data();
     }
-    ~EventHandler() {
+    ~EventHandler() override{
         EventHandler::write_to_file();
     }
     Event parse_data_element(const vector<string> &data_el){
@@ -1224,6 +1319,132 @@ public:
     }
 
 };
+
+// clasă care conține raportul financiar calculat pentru o anumită zi
+class FinancialReport {
+private:
+    float wages;
+    float product_costs;
+    float product_revenues;
+    float event_revenues;
+    float event_costs;
+
+
+public:
+    // aici am doi constructori diferiți, în funcție de argumentele primite
+    // un exemplu de polimorfism
+    FinancialReport(const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in) {
+        wages = wages_in;
+        product_costs = product_costs_in;
+        product_revenues = product_revenues_in;
+        event_revenues = event_revenues_in;
+        event_costs = event_costs_in;
+    }
+
+    FinancialReport(string date, string root_folder) {
+
+        EmployeeHandler employees(root_folder);
+        EventHandler events(root_folder);
+
+        // verific dacă data introdusă este validă
+        if (!is_valid_date(date)) {
+            cout<<"Dată invalidă!"<<endl;
+            throw 1;
+        }
+        if (is_future_date(date)) {
+            cout<<"Rapoartele financiare nu pot fi făcute pentru zile din viitor!"<<endl;
+        }
+
+        // mai întâi mă uit pe toate comenzile din ziua respectivă
+        // adun prețurile și respectiv costurile produselor
+
+        // operațiile astea le fac în funcții separate ca să fiu sigur că obiectele respective se distrug
+        // astfel, mă asigur că nu accesează mai multe obiecte aceleași fișiere
+        pair<float,float> revenue_cost = calculate_product_revenue_cost(date, root_folder);
+        product_revenues = revenue_cost.first;
+        product_costs = revenue_cost.second;
+
+        pair<float,float> event_revenue_cost = calculate_event_revenue_cost(date, root_folder);
+        event_revenues = event_revenue_cost.first;
+        event_costs = event_revenue_cost.second;
+
+        wages = calculate_wages(date, root_folder);
+
+
+
+
+    }
+
+    pair<float,float> calculate_product_revenue_cost(string date, string root_folder) {
+        OrderHandler orders(root_folder);
+        ProductHandler product_list(root_folder);
+
+        vector<Order> orders_by_date = orders.get_orders_by_date(date);
+        vector<Product> products;
+
+        float revenue = 0;
+        float cost = 0;
+        for (int i=0; i<orders_by_date.size(); i++) {
+            vector<string> product_names = orders_by_date[i].get_product_names();
+            for (int j=0; j<product_names.size(); j++) {
+                // cursed
+                // caută produsul după nume, apoi returnează obiectul Product
+                Product current_product = product_list.get_product(product_list.search_product(product_names[j]));
+                revenue += current_product.get_price();
+                cost += current_product.get_cost();
+            }
+        }
+        return make_pair(revenue, cost);
+    }
+
+    float calculate_wages(string date, string root_folder) {
+        EmployeeHandler employees(root_folder);
+        float wages= 0;
+
+        // TODO: să văd de ce îmi dă memory leak funcția aia de copiere și să o implementez aici
+        for (int i=0; i<employees.employees.size(); i++) {
+            wages += employees.employees[i]->get_daily_pay(date);
+        }
+
+
+        return wages;
+    }
+
+    pair<float,float> calculate_event_revenue_cost(string date, string root_folder) {
+        EventHandler events(root_folder);
+        vector<Event> events_by_date = events.get_events_by_date(date);
+        float revenue = 0;
+        float cost = 0;
+        for (int i=0; i<events_by_date.size(); i++) {
+            revenue += events_by_date[i].get_ticket_price()*events_by_date[i].get_ticket_count();
+            // costurile evenimentelor sunt doar costurile de marketing și diverse
+            cost += events_by_date[i].get_misc_costs()+events_by_date[i].get_marketing_costs();
+        }
+        return make_pair(revenue, cost);
+    }
+
+    void display_report() {
+        cout<<"Veniturile magazinului: "<<product_revenues<<endl;
+        cout<<" - Venituri din vânzări: "<<product_revenues<<endl;
+        cout<<" - Venituri din evenimente: "<<event_revenues<<endl;
+        cout<<"Costurile magazinului: "<<product_costs<<endl;
+        cout<<" - Salariile pentru ziua aceasta: "<<wages<<endl;
+        cout<<" - Costuri aferente produselor: "<<product_costs<<endl;
+        cout<<" - Costuri aferente evenimentelor: "<<event_costs<<endl;
+    }
+
+    vector<string> report_to_data() {
+        vector<string> data;
+        data.push_back(to_string(wages));
+        data.push_back(to_string(product_costs));
+        data.push_back(to_string(product_revenues));
+        data.push_back(to_string(event_revenues));
+        data.push_back(to_string(event_costs));
+
+        return data;
+    }
+};
+
 int main(){
     string data_path = "./data/";
 
