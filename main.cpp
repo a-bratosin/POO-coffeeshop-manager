@@ -1,8 +1,8 @@
 //
 // Created by abratosin on 12/29/24.
 //
-#include "input_handling.cpp"
-
+#include "input_handling.h"
+#include "handler.h"
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -11,6 +11,7 @@
 #include <random>
 #include <utility>
 #include <array>
+
 using namespace std;
 
 
@@ -74,22 +75,6 @@ bool is_future_date(const string &date) {
     return false;
 }
 
-// clasă abstractă care îmi definește interacțiunile cu CSV-urile
-class Handler {
-protected:
-    string file_path;
-public:
-    virtual ~Handler() = default;
-
-    explicit Handler(const string& file_path_in){
-        file_path = file_path_in;
-    }
-    virtual void parse_data() = 0;
-    virtual vector<vector<string>> get_data() = 0;
-    virtual void write_to_file() = 0;
-
-
-};
 
 //              CLASA DE ANGAJAȚI
 // pentru implementarea funcționalității angajaților, implementez aici un design pattern-ul de Factory
@@ -343,7 +328,8 @@ public:
     }
 
     Employee* parse_data_element(const vector<string> &data_el){
-        if(data_el.size() != 3){
+        cout<<data_el[0]<<endl;
+        if(data_el.size() != 4){
             cout<<"Prea multe câmpuri pentru angajat. Datele au fost introduse incorect."<<endl;
             throw 1;
         }
