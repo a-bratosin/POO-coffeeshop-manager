@@ -10,6 +10,7 @@
 #include <fstream>
 #include <random>
 #include <utility>
+#include <array>
 using namespace std;
 
 
@@ -84,7 +85,9 @@ public:
         file_path = file_path_in;
     }
     virtual void parse_data() = 0;
+    virtual vector<vector<string>> get_data() = 0;
     virtual void write_to_file() = 0;
+
 
 };
 
@@ -263,12 +266,12 @@ public:
         cout<<"Rol: Ospătar"<<endl;
     }
     string get_role() {
-        return "waiter";
+        return "Ospatar";
     }
     vector<string> employee_to_data() override {
         vector<string> data = partial_employee_to_data();
 
-        data.insert(data.begin(), "Manager");
+        data.insert(data.begin(), "Ospatar");
 
         return data;
     }
@@ -384,7 +387,8 @@ public:
             employees.push_back(parse_data_element(data[i]));
         }
     }
-    void write_to_file() override {
+
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(employee_file_path);
         vector<vector<string>> data_in;
 
@@ -392,6 +396,12 @@ public:
             data_in.push_back(employees[i]->employee_to_data());
         }
 
+        return data_in;
+    }
+    void write_to_file() override {
+        vector<vector<string>> data_in = get_data();
+
+        CSVInputHandler csv_handler(employee_file_path);
         csv_handler.lines_from_data(data_in);
     }
 
@@ -663,7 +673,7 @@ public:
         }
     }
 
-    void write_to_file() override {
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(product_file_path);
         vector<vector<string>> data_in;
 
@@ -671,6 +681,14 @@ public:
             data_in.push_back(products[i].product_to_data());
         }
 
+        return data_in;
+    }
+
+    void write_to_file() override {
+
+        vector<vector<string>> data_in = get_data();
+
+        CSVInputHandler csv_handler(product_file_path);
         csv_handler.lines_from_data(data_in);
     }
 
@@ -850,7 +868,8 @@ public:
             customers.push_back(parse_data_element(data[i]));
         }
     }
-    void write_to_file() override {
+
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(customer_file_path);
         vector<vector<string>> data_in;
 
@@ -858,6 +877,12 @@ public:
             data_in.push_back(customers[i].customer_to_data());
         }
 
+        return data_in;
+    }
+    void write_to_file() override {
+        vector<vector<string>> data_in = this->get_data();
+
+        CSVInputHandler csv_handler(customer_file_path);
         csv_handler.lines_from_data(data_in);
     }
 
@@ -1036,13 +1061,20 @@ public:
         }
     }
 
-    void write_to_file() override {
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(order_file_path);
         vector<vector<string>> data_in;
+
         for (int i=0; i<orders.size(); i++) {
             data_in.push_back(orders[i].order_to_data());
         }
 
+        return data_in;
+    }
+    void write_to_file() override {
+        vector<vector<string>> data_in = this->get_data();
+
+        CSVInputHandler csv_handler(order_file_path);
         csv_handler.lines_from_data(data_in);
     }
 
@@ -1234,13 +1266,22 @@ public:
         }
     }
 
-    void write_to_file() override {
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(event_file_path);
         vector<vector<string>> data_in;
+
         for (int i=0; i<events.size(); i++) {
             data_in.push_back(events[i].event_to_data());
         }
 
+        return data_in;
+    }
+
+    void write_to_file() override {
+
+        vector<vector<string>> data_in = this->get_data();
+
+        CSVInputHandler csv_handler(event_file_path);
         csv_handler.lines_from_data(data_in);
     }
 
@@ -1478,16 +1519,36 @@ public:
         }
     }
 
-    void write_to_file() override {
+    vector<vector<string>> get_data() override {
         CSVInputHandler csv_handler(report_file_path);
         vector<vector<string>> data_in;
+
         for (int i=0; i<reports.size(); i++) {
             data_in.push_back(reports[i].report_to_data());
         }
 
+        return data_in;
+    }
+
+    void write_to_file() override {
+
+        vector<vector<string>> data_in = this->get_data();
+
+        CSVInputHandler csv_handler(report_file_path);
         csv_handler.lines_from_data(data_in);
     }
 };
+
+// creez o funcție de template care să se ocupe de traducerea unui document CSV
+template <typename T>
+void convert_to_english(T handler) {
+
+}
+
+template<>
+void convert_to_english(EmployeeHandler &handler) {
+    string header_file = "Position/Name/Pay/Shifts";
+}
 
 int main(){
     string data_path = "./data/";
