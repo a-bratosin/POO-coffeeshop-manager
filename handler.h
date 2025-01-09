@@ -5,7 +5,10 @@
 #ifndef HANDLER_H
 #define HANDLER_H
 
+#include <string>
+#include <vector>
 
+using namespace std;
 // clasă abstractă care îmi definește interacțiunile cu CSV-urile
 
 // aici doar am pus toată definiția în header
