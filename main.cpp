@@ -8,6 +8,8 @@
 #include "products.h"
 #include "customers_orders.h"
 #include "events.h"
+#include "financial.h"
+#include "to_english.h"
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -22,16 +24,7 @@ using namespace std;
 
 
 
-// creez o funcție de template care să se ocupe de traducerea unui document CSV
-template <typename T>
-void convert_to_english(T handler) {
 
-}
-
-template<>
-void convert_to_english(EmployeeHandler &handler) {
-    string header_file = "Position/Name/Pay/Shifts";
-}
 
 int main(){
     string data_path = "./data/";
@@ -90,5 +83,9 @@ int main(){
     EmployeeHandler employee_handler(data_path);
     employee_handler.add_employee();
     cout<<"end"<<endl;
+
+    test();
+
+    convert_to_english(employee_handler);
     return 0;
 }
