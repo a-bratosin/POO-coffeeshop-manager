@@ -93,7 +93,7 @@ void convert_to_english(ProductHandler& handler) {
     
     string file_folder = handler.get_file_path();
 
-    string file_path = file_folder + "/en/events.csv";
+    string file_path = file_folder + "/en/products.csv";
     cout<<"File path: "<<file_path<<endl;
     
     
@@ -111,7 +111,7 @@ void convert_to_english(OrderHandler& handler) {
     
     string file_folder = handler.get_file_path();
 
-    string file_path = file_folder + "/en/events.csv";
+    string file_path = file_folder + "/en/orders.csv";
     cout<<"File path: "<<file_path<<endl;
     
     
@@ -129,7 +129,7 @@ void convert_to_english(FinancialReportHandler& handler) {
     
     string file_folder = handler.get_file_path();
 
-    string file_path = file_folder + "/en/events.csv";
+    string file_path = file_folder + "/en/reports.csv";
     cout<<"File path: "<<file_path<<endl;
     
     
