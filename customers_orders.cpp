@@ -113,7 +113,7 @@ void CustomerHandler::add_customer(string const &name) {
     // în mod normal, nu ar trb să se poată ajunge la if-ul ăsta
     if (search_customer(name) != -1) {
         cout<<"Clientul există deja în baza de date!"<<endl;
-        throw 2;
+        throw 11;
     }
     // aici codul e puțin sloppy: aici pun 1 deoarece funcția este apelată doar când un client își adaugă prim
     customers.push_back(Customer(name));
@@ -123,7 +123,7 @@ float CustomerHandler::get_discount(string const &name) {
     int customer_index = search_customer(name);
     if (customer_index==-1) {
         cout<<"Clientul \""<<name<<"\" nu a putut fi găsit!"<<endl;
-        throw 6;
+        throw 11;
     }
     // 10% reducere pentru >= comenzi, 15% pentru >= 20
     if (customers[customer_index].get_previous_orders()>=20) {
@@ -140,7 +140,7 @@ void CustomerHandler::add_order(string const &name) {
     int customer_index = search_customer(name);
     if (customer_index==-1) {
         cout<<"Clientul \""<<name<<"\" nu a putut fi găsit!"<<endl;
-        throw 6;
+        throw 11;
     }
 
     customers[customer_index].increment_orders();
@@ -286,11 +286,11 @@ void OrderHandler::create_order() {
     cin>>order_date;
     if (!is_valid_date(order_date)) {
         cout<<"Dată invalidă!"<<endl;
-        throw 1;
+        throw 3;
     }
     if (is_future_date(order_date)) {
         cout<<"Comanda introdusă este din viitor!"<<endl;
-        throw 2;
+        throw 3;
     }
     cout<<"Introduceți numărul de produse: "<<endl;
     cin>>product_count;

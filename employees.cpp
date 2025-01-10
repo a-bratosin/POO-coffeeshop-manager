@@ -203,7 +203,7 @@ Employee* EmployeeHandler::parse_data_element(const vector<string> &data_el){
         return creator.create_employee(name, pay, hours);
     }
     cout<<"Rol necunoscut!"<<endl;
-    throw 2;
+    throw 1;
 }
 
 void EmployeeHandler::parse_data() {
@@ -262,7 +262,7 @@ void EmployeeHandler::add_employee() {
 
         if (start_hour > end_hour) {
             cout<<"Interval orar invalid!"<<endl;
-            throw 2;
+            throw 3;
         }
 
         hours[i] = make_pair(start_hour, end_hour);

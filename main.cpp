@@ -176,14 +176,11 @@ int main(){
                         case 2:
                             cout<<"Eroare la căutarea angajatului!"<<endl;
                             break;
-                        case 7:
-                            cout<<"Eroare la cumpărarea unui produs!"<<endl;
-                            break;
-                        case 8:
-                            cout<<"Eroare la gestionarea stocului!"<<endl;
+                        case 3:
+                            cout<<"Eroare la adăugarea unui angajat!"<<endl;
                             break;
                         
-                        case 11:
+                        default:
                             cout<<"Eroare (foarte) tehnică! Ceva a mers foarte prost!"<<endl;
                             break;
                     }
@@ -191,7 +188,9 @@ int main(){
                     break;
                 }
                 break;
+
             case '2':
+            
             // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
             // în cazul de față, acest lucru este realizat de blocul din try
                 try{
@@ -300,12 +299,85 @@ int main(){
 
                     break;
                 }
-                
+            
                 break;
             
             case '3':
-                data_path+="timisoara";
+            // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
+            // în cazul de față, acest lucru este realizat de blocul din try
+                try{
+                    OrderHandler order_handler(data_path);
+
+                    selection='0';
+                    while (selection<'1' || selection>'4'){
+
+                        cout<<"Selectați operația dorită:"<<endl;
+                        cout<<"1) Adăugare de comandă"<<endl;
+                        cout<<"2) Căutarea comenzilor dintr-o zi"<<endl;
+                        cin>>selection;
+
+                        switch (selection) {
+                            case '1':
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                order_handler.create_order();
+                                break;
+                            case '2':
+                            {   
+                                cout<<"Introduceți data comenzilor:"<<endl;
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                
+                                string date;
+                                getline(cin, date);
+                                vector<Order> order_list =  order_handler.get_orders_by_date(date);
+
+                                for(int i=0; i<order_list.size(); i++){
+                                    order_list[i].display_information();
+                                }
+                                break;
+                            }
+
+                            default:
+                                cout<<"Selectați o opțiune validă!\n"<<endl;
+                                break;
+                        }
+
+                        
+                    }
+                    cin.clear();
+                        cin.ignore(100, '\n');
+
+                        cout<<"Doriți să exportați CSV-urile și în engleză? (d/n)";
+                        char choice;
+                        cin>>choice;
+                        if(choice == 'd'){
+                            convert_to_english(order_handler);
+                            CustomerHandler customers(data_path);
+                            convert_to_english(customers);
+                        }
+                }catch(int e){
+                    switch(e){
+                        case 1:
+                            cout<<"Eroare la deschiderea fișierelor!"<<endl;
+                            break;
+                        case 2:
+                            cout<<"Eroare la adăugarea unui client nou!"<<endl;
+                            break;
+                        case 3:
+                            cout<<"Eroare la crearea unui comenzi!"<<endl;
+                            break;
+                        
+                        case 11:
+                            cout<<"Eroare (foarte) tehnică! Ceva a mers foarte prost!"<<endl;
+                            break;
+                    }
+
+                    break;
+                }
+                
                 break;
+            
             case '4':
                 data_path+="iasi";
                 break;
