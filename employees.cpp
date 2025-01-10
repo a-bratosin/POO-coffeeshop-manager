@@ -314,36 +314,50 @@ vector<Employee *> EmployeeHandler::get_employees() {
 }
 */
 
-Employee* EmployeeHandler::search_employee(string name, bool display) {
+int EmployeeHandler::search_employee(string name, bool display) {
     for (int i=0; i<employees.size(); i++) {
         if (employees[i]->get_name() == name) {
             if (display) {
                 cout<<"Angajatul a fost găsit!"<<endl;
                 employees[i]->display_full_information();
             }
-            return employees[i];
+            return i;
         }
     }
     if (display) {
         cout<<"Angajatul nu a putut fi găsit!"<<endl;
     }
-    throw 1;
+    return -1;
 }
 
+void EmployeeHandler::remove_employee(string name){
+    int index = search_employee(name, false);
+    if (index == -1) {
+        cout<<"Produsul nu a putut fi găsit!"<<endl;
+        throw 2;
+    }
+
+    Employee * temp = employees[index];
+    employees.erase(employees.begin() + index);
+
+    // ca să nu fac memory leak
+    delete temp;
+    cout<<"Produs șters!"<<endl;
+}
 float EmployeeHandler::get_weekly_pay(string name) {
-    Employee *employee = search_employee(name, false);
-    return employee->get_weekly_pay();
+    int employee_index = search_employee(name, false);
+    return employees[employee_index]->get_weekly_pay();
 }
 
 float EmployeeHandler::get_salary(string name, unsigned int hours_worked, bool display) {
-    Employee *employee = search_employee(name, false);
-    float net_salary = floor(employee->get_hourly_pay()*hours_worked*0.45);
+    int employee_index = search_employee(name, false);
+    float net_salary = floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.45);
     if (display) {
-        cout<<"Pentru "<<hours_worked<<"ore lucrate, angajatul are un salariu brut de "<<floor(employee->get_hourly_pay()*hours_worked)<<" RON."<<endl;
+        cout<<"Pentru "<<hours_worked<<"ore lucrate, angajatul are un salariu brut de "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked)<<" RON."<<endl;
         cout<<"Din aceștia, se extrage: "<<endl;
-        cout<<"\tAsigurări sociale (CAS) 25%: "<<floor(employee->get_hourly_pay()*hours_worked*0.25)<<" RON"<<endl;
-        cout<<"\tAsigurări sociale de sănătate (CASS) 10%: "<<floor(employee->get_hourly_pay()*hours_worked*0.1)<<" RON"<<endl;
-        cout<<"\tImpozit pe venit 10%:"<<floor(employee->get_hourly_pay()*hours_worked*0.1)<<endl;
+        cout<<"\tAsigurări sociale (CAS) 25%: "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.25)<<" RON"<<endl;
+        cout<<"\tAsigurări sociale de sănătate (CASS) 10%: "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.1)<<" RON"<<endl;
+        cout<<"\tImpozit pe venit 10%:"<<floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.1)<<endl;
         cout<<"Salariu net: "<<net_salary<<" RON"<<endl;
     }
 

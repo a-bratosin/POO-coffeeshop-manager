@@ -174,10 +174,10 @@ public:
     void write_to_file() override;
 
     void add_employee();
-    Employee* search_employee(string name, bool display);
+    int search_employee(string name, bool display);
     // funcție pe care n-am mai pus-o deoarece dădea memory leak
     // vector<Employee *> EmployeeHandler::get_employees();
-    
+    void remove_employee(string name);
 
     float get_weekly_pay(string name);
     float get_salary(string name, unsigned int hours_worked, bool display=false);
