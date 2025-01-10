@@ -112,7 +112,7 @@ void Product::display_information() {
 // funcțiile aferente clasei ProductHandler
 
 ProductHandler::ProductHandler(const string &file_path_in): Handler(file_path_in) {
-    product_file_path = file_path+"/products.csv";
+    product_file_path = file_path+"/ro/products.csv";
     ProductHandler::parse_data();
 }
 

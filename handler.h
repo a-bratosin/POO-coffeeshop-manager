@@ -22,6 +22,9 @@ public:
         file_path = file_path_in;
     }
 
+    string get_file_path() {
+        return file_path;
+    }
     virtual void parse_data() = 0;
     virtual vector<vector<string>> get_data() = 0;
     virtual void write_to_file() = 0;

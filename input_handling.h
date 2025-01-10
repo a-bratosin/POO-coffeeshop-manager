@@ -50,7 +50,7 @@ class CSVInputHandler{
         string line_from_data(const vector<string> &data);
 
         void append_line(const string& line);
-
+        void set_header(const string& header);
 };
 
 #endif //INPUT_HANDLING_H

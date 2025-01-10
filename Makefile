@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -fPIC
 TARGET = build/coffeeshop-manager
-SRCS = main.cpp input_handling.cpp employees.cpp products.cpp financial.cpp customers_orders.cpp check_date.cpp events.cpp
+SRCS = main.cpp input_handling.cpp employees.cpp products.cpp financial.cpp customers_orders.cpp check_date.cpp events.cpp to_english.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 

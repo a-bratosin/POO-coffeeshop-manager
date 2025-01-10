@@ -165,14 +165,16 @@ void EventHandler::create_event() {
     for (int i=0; i<product_count; i++) {
         string product_name;
         int product_number;
-        cout<<"Introduceți numele produsului #: "<<i+1<<endl;
+        cout<<"Introduceți numele produsului #"<<i+1<<": "<<endl;
         getline(cin, product_name);
         if(product_handler.search_product(product_name)==-1){
             cout<<"Produsul nu se află în gama magazinului!"<<endl;
+            throw 1;
         }
 
         cout<<"Introduceți cantitatea produsului: ";
         cin>>product_number;
+        cin.ignore();
         products.push_back(make_pair(product_name, product_number));
     }
     cout<<"Introduceți costurile de marketing: "<<endl;

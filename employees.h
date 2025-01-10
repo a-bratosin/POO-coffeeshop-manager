@@ -152,16 +152,19 @@ private:
 public:
     vector<Employee*> employees;
     explicit EmployeeHandler(const string &file_path_in): Handler(file_path_in) {
-        employee_file_path = file_path+"/employees.csv";
+        employee_file_path = file_path+"/ro/employees.csv";
         EmployeeHandler::parse_data();
     }
 
     ~EmployeeHandler() override{
+        cout<<"destructor"<<endl;
         EmployeeHandler::write_to_file();
 
+        
         for (int i=0; i <employees.size(); i++) {
             delete employees[i];
         }
+        
     }
 
     Employee* parse_data_element(const vector<string> &data_el);

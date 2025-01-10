@@ -10,6 +10,7 @@
 #include "events.h"
 #include "financial.h"
 #include "to_english.h"
+#include "events.h"
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -80,6 +81,7 @@ int main(){
     cout<<"end"<<endl;
     */
 
+    /*
     EmployeeHandler employee_handler(data_path);
     employee_handler.add_employee();
     cout<<"end"<<endl;
@@ -87,5 +89,12 @@ int main(){
     test();
 
     convert_to_english(employee_handler);
+    */
+
+    EventHandler event_handler(data_path);
+    event_handler.create_event();
+    cout<<"end"<<endl;
+
+    convert_to_english(event_handler);
     return 0;
 }
