@@ -16,7 +16,8 @@
 
 // aici am doi constructori diferiți, în funcție de argumentele primite
 // un exemplu de polimorfism
-FinancialReport::FinancialReport(const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in) {
+FinancialReport::FinancialReport(const string& date_in ,const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in) {
+    date = date_in;
     wages = wages_in;
     product_costs = product_costs_in;
     product_revenues = product_revenues_in;
@@ -24,7 +25,9 @@ FinancialReport::FinancialReport(const float wages_in, const float product_costs
     event_costs = event_costs_in;
 }
 
-FinancialReport::FinancialReport(string date, string root_folder) {
+FinancialReport::FinancialReport(string date_in, string root_folder) {
+    
+    date = date_in;
 
     EmployeeHandler employees(root_folder);
     EventHandler events(root_folder);
@@ -118,6 +121,7 @@ void FinancialReport::display_report() {
 
 vector<string> FinancialReport::report_to_data() {
     vector<string> data;
+    data.push_back(date);
     data.push_back(to_string(wages));
     data.push_back(to_string(product_costs));
     data.push_back(to_string(product_revenues));
@@ -138,16 +142,17 @@ FinancialReportHandler::~FinancialReportHandler(){
     FinancialReportHandler::write_to_file();
 }
 FinancialReport FinancialReportHandler::parse_data_element(const vector<string> &data_el){
-    if(data_el.size() != 5){
+    if(data_el.size() != 6){
         cout<<"Prea multe câmpuri pentru raport. Datele au fost introduse incorect."<<endl;
         throw 1;
     }
-    const float wages = stof(data_el[0]);
-    const float product_costs = stof(data_el[1]);
-    const float product_revenues = stof(data_el[2]);
-    const float event_revenues = stof(data_el[3]);
-    const float event_costs = stof(data_el[4]);
-    return FinancialReport(wages, product_costs, product_revenues, event_revenues, event_costs);
+    const string date = data_el[0];
+    const float wages = stof(data_el[1]);
+    const float product_costs = stof(data_el[2]);
+    const float product_revenues = stof(data_el[3]);
+    const float event_revenues = stof(data_el[4]);
+    const float event_costs = stof(data_el[5]);
+    return FinancialReport(date, wages, product_costs, product_revenues, event_revenues, event_costs);
 }
 
 void FinancialReportHandler::parse_data(){
@@ -175,4 +180,10 @@ void FinancialReportHandler::write_to_file(){
 
     CSVInputHandler csv_handler(report_file_path);
     csv_handler.lines_from_data(data_in);
+}
+
+void FinancialReportHandler::generate_report(string date){
+    FinancialReport new_report(date, file_path);
+
+    reports.push_back(new_report);
 }

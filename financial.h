@@ -17,6 +17,7 @@ using namespace std;
 // clasă care conține raportul financiar calculat pentru o anumită zi
 class FinancialReport {
 private:
+    string date;
     float wages;
     float product_costs;
     float product_revenues;
@@ -27,7 +28,7 @@ private:
 public:
     // aici am doi constructori diferiți, în funcție de argumentele primite
     // un exemplu de polimorfism
-    FinancialReport(const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in);
+    FinancialReport(const string& date, const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in);
 
     FinancialReport(string date, string root_folder);
 
@@ -39,6 +40,7 @@ public:
 
     void display_report();
     vector<string> report_to_data();
+
 };
 
 class FinancialReportHandler: public Handler {
@@ -55,6 +57,8 @@ public:
     vector<vector<string>> get_data() override;
 
     void write_to_file() override;
+
+    void generate_report(string date);
 };
 
 #endif // FINANCIAL_H
