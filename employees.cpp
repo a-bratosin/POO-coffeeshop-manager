@@ -168,7 +168,7 @@ vector<string> Waiter::employee_to_data() {
 // funcțiile clasei EmployeeHandler
 
 Employee* EmployeeHandler::parse_data_element(const vector<string> &data_el){
-    cout<<data_el[0]<<endl;
+    //cout<<data_el[0]<<endl;
     if(data_el.size() != 4){
         cout<<"Prea multe câmpuri pentru angajat. Datele au fost introduse incorect."<<endl;
         throw 1;

@@ -155,7 +155,7 @@ FinancialReportHandler::~FinancialReportHandler(){
     FinancialReportHandler::write_to_file();
 }
 FinancialReport FinancialReportHandler::parse_data_element(const vector<string> &data_el){
-    if(data_el.size() != 6){
+    if(data_el.size() != 9){
         cout<<"Prea multe câmpuri pentru raport. Datele au fost introduse incorect."<<endl;
         throw 1;
     }
@@ -240,6 +240,6 @@ int FinancialReportHandler::report_date_index(string date){
         }
     }
 
-    cout<<"Nu a fost generat un raport pentru data introdusă!"<<endl;
+    //cout<<"Nu a fost generat un raport pentru data introdusă!"<<endl;
     return -1;
 }

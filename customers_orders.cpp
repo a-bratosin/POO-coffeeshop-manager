@@ -336,6 +336,6 @@ vector<Order> OrderHandler::get_orders_by_date(string date) {
             new_orders.push_back(orders[i]);
         }
     }
-    cout<<new_orders.size();
+    //cout<<new_orders.size();
     return new_orders;
 }

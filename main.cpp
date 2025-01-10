@@ -350,6 +350,12 @@ int main()
                         getline(cin, date);
                         vector<Order> order_list = order_handler.get_orders_by_date(date);
 
+                        //cout<<"size:"<<order_list.size()<<endl;
+                        if(order_list.size()==0){
+                            cout<<"Nu au fost înregistrate comenzi în acea dată!"<<endl;
+                            break;
+                        }
+
                         for (int i = 0; i < order_list.size(); i++)
                         {
                             order_list[i].display_information();
@@ -448,10 +454,17 @@ int main()
                         getline(cin, date);
                         vector<Event> searched_events = event_handler.get_events_by_date(date);
                         
-                        
+                        cout<<"size:"<<searched_events.size()<<endl;
+                        if(searched_events.size()==0){
+                            cout<<"Nu au fost înregistrate comenzi în acea dată!"<<endl;
+                            break;
+                        }
+
                         for(int i=0; i<searched_events.size(); i++){
                             searched_events[i].display_information();
+                            cout<<endl;
                         }
+
                         break;
                     }
                     
