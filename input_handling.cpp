@@ -37,11 +37,11 @@ void CSVInputHandler::write_lines(){
     ofstream file;
     file.open(file_path);
     file<<csv_header<<endl;
-    cout<<csv_header<<endl;
+    //cout<<csv_header<<endl;
     if(file.is_open()){
         for(int i=0; i<lines.size(); i++){
             file<<lines[i]<<endl;
-            cout<<lines[i]<<endl;
+            //cout<<lines[i]<<endl;
         }
     }
 }

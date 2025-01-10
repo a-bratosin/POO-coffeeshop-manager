@@ -191,7 +191,7 @@ void ProductHandler::add_product() {
     getline(cin, name);
     if (search_product(name) != -1) {
         cout<<"Produsul există deja în baza de date!"<<endl;
-        throw 1;
+        throw 2;
     }
     cout<<"Introduceți codul produsului: ";
     cin>>code;
@@ -218,6 +218,8 @@ void ProductHandler::remove_product(const string &name) {
         throw 5;
     }
     products.erase(products.begin() + index);
+
+    cout<<"Produs șters!"<<endl;
 }
 
 Product ProductHandler::get_product(int index) {

@@ -26,6 +26,11 @@ using namespace std;
 
 
 
+// funcție care îmi verifică dacă stringul dat este număr întreg
+bool has_only_digits(const string s){
+  return s.find_first_not_of( "0123456789" ) == string::npos;
+}
+
 
 int main(){
     string data_path = "./data/";
@@ -48,6 +53,138 @@ int main(){
             case '2':
                 data_path+="cluj";
                 break;
+            case '3':
+                data_path+="timisoara";
+                break;
+            case '4':
+                data_path+="iasi";
+                break;
+            case '5':
+                data_path+="brasov";
+                break;
+            default:
+                cout<<"Selectați o opțiune validă!\n"<<endl;
+                break;
+        }
+
+        cin.clear();
+        cin.ignore(100, '\n');
+    }
+
+    selection='0';
+    while (selection<'1' || selection>'5'){
+
+        cout<<"Selectați categoria de operațiune pe care doriți să o realizați:"<<endl;
+        cout<<"1) Gestionarea angajaților"<<endl;
+        cout<<"2) Gestionarea produselor"<<endl;
+        cout<<"3) Gestionarea comenzilor"<<endl;
+        cout<<"4) Gestionarea evenimentelor"<<endl;
+        cout<<"5) Gestionarea rapoartelor financiare"<<endl;
+        cin>>selection;
+
+        switch (selection) {
+            case '1':
+                data_path+="bucuresti";;
+                break;
+            case '2':
+            // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
+            // în cazul de față, acest lucru este realizat de blocul din try
+                try{
+                    ProductHandler product_handler(data_path);
+
+                    selection='0';
+                    while (selection<'1' || selection>'4'){
+
+                        cout<<"Selectați operația dorită:"<<endl;
+                        cout<<"1) Adăugare de produse"<<endl;
+                        cout<<"2) Căutare de produse"<<endl;
+                        cout<<"3) Ștergere de produse"<<endl;
+                        cout<<"4) Resetarea stocului"<<endl;
+                        cin>>selection;
+
+                        switch (selection) {
+                            case '1':
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                product_handler.add_product();
+                                break;
+                            case '2':
+                            {   
+                                cout<<"Introduceți numele produsului căutat:"<<endl;
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                
+                                string product_name;
+                                getline(cin, product_name);
+                                product_handler.search_product(product_name, true);
+                                break;
+                            }
+                            case '3':
+                            {   
+                                cout<<"Introduceți numele produsului care trebuie șters:"<<endl;
+                                cin.clear();
+                                cin.ignore(100, '\n');
+
+                                string product_name;
+                                getline(cin, product_name);
+                                product_handler.remove_product(product_name);
+                                break;
+                            }
+                            case '4':
+                            {   
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                cout<<"Introduceți numele produsului pentru care vreți să resetați stocul:"<<endl;
+                                string product_name;
+                                getline(cin, product_name);
+                                cout<<"Introduceți stocul nou:"<<endl;
+                                string new_stock_buf;
+                                cin>>new_stock_buf;
+
+                                // verific dacă stringul conține doar cifre
+                                if (has_only_digits(new_stock_buf)){
+                                    int new_stock = stoi(new_stock_buf);
+
+                                    product_handler.reset_stock(product_name, new_stock);
+                                    
+                                }else{
+                                    cout<<"Stoc invalid!"<<endl;
+                                    throw(5);
+                                }
+
+                                
+                                break;
+                            }
+                            
+
+                            default:
+                                cout<<"Selectați o opțiune validă!\n"<<endl;
+                                break;
+                        }
+
+                        
+                    }
+                    cin.clear();
+                        cin.ignore(100, '\n');
+
+                        cout<<"Doriți să exportați CSV-ul și în engleză? (d/n)";
+                        char choice;
+                        cin>>choice;
+                        if(choice == 'd'){
+                            convert_to_english(product_handler);
+                        }
+                }catch(int e){
+                    switch(e){
+                        case 1:
+                            cout<<"Eroare la deschiderea fișierului de produse!"<<endl;
+                            break;
+                    }
+
+                    break;
+                }
+                
+                break;
+            
             case '3':
                 data_path+="timisoara";
                 break;
@@ -90,11 +227,12 @@ int main(){
 
     convert_to_english(employee_handler);
     */
-
+    /*
     EventHandler event_handler(data_path);
     event_handler.create_event();
     cout<<"end"<<endl;
 
     convert_to_english(event_handler);
+    */
     return 0;
 }

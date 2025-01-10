@@ -1,4 +1,7 @@
-Name,Date,Products,Marketing costs,Misc costs,Ticket price,Ticket count
-Degustare de cafea,20/01/2025,Capuccino-0/-0/-0,0.000000,-nan,0.000000,0
-Degustare de cafea 2,18/01/2025,Espresso-10/Cappuccino-10/Macchiato-10,150.000000,200.000000,30.000000,50
-Bake sale,21/02/2025,Sugar Cookie-40,150.000000,100.000000,5.000000,40
+Name, Code, Price, Cost, Stockable, Stock
+Espresso,fwefwqf3,9.000000,1.000000,0,-1
+Cappuccino,fef1e1e1,12.000000,1.000000,0,-1
+Macchiato,f2r2f3,10.000000,1.000000,0,-1
+ggfd,qf3f12ff12,8.000000,7.000000,0,-1
+Sugar Cookie,f2233e12e,10.000000,6.000000,1,16
+Marocchino,ew2323e32,15.000000,10.000000,0,-1
