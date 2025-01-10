@@ -357,7 +357,7 @@ float EmployeeHandler::get_salary(string name, unsigned int hours_worked, bool d
     }
     float net_salary = floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.45);
     if (display) {
-        cout<<"Pentru "<<hours_worked<<"ore lucrate, angajatul are un salariu brut de "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked)<<" RON."<<endl;
+        cout<<"Pentru "<<hours_worked<<" de ore lucrate, angajatul are un salariu brut de "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked)<<" RON."<<endl;
         cout<<"Din aceștia, se extrage: "<<endl;
         cout<<"\tAsigurări sociale (CAS) 25%: "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.25)<<" RON"<<endl;
         cout<<"\tAsigurări sociale de sănătate (CASS) 10%: "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.1)<<" RON"<<endl;
