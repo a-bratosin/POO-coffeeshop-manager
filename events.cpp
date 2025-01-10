@@ -72,7 +72,12 @@ float Event::get_misc_costs() {
 float Event::get_marketing_costs() {
     return marketing_costs;
 }
-
+string Event::get_date(){
+    return event_date;
+}
+string Event::get_name(){
+    return event_name;
+}
 
 // funcțiile aferente clasei EventHandler
 
@@ -190,7 +195,7 @@ void EventHandler::create_event() {
 
 Event EventHandler::search_event(string const &name, bool const display) {
     for (int i=0; i<events.size(); i++) {
-        if (events[i].get_products()[0].first == name) {
+        if (events[i].get_name() == name) {
             if (display) {
                 cout<<"Evenimentul a fost găsit!"<<endl;
                 events[i].display_information();
@@ -207,7 +212,7 @@ Event EventHandler::search_event(string const &name, bool const display) {
 vector<Event> EventHandler::get_events_by_date(string date){
     vector<Event> events_by_date;
     for (int i=0; i<events.size(); i++) {
-        if (events[i].get_products()[0].first == date) {
+        if (events[i].get_date() == date) {
             events_by_date.push_back(events[i]);
         }
     }

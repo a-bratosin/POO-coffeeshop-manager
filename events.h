@@ -29,6 +29,8 @@ public:
     int get_ticket_count();
     float get_misc_costs();
     float get_marketing_costs();
+    string get_date();
+    string get_name();
 };
 
 class EventHandler: public Handler {
