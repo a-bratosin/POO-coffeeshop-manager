@@ -45,7 +45,7 @@ public:
     vector<vector<string>> get_data();
 
     void write_to_file();
-
+    // calcularea costurilor totale se face în financial report
     void create_event();
     Event search_event(string const &name, bool const display=false);
 

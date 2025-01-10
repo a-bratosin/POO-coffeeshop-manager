@@ -155,7 +155,7 @@ void EventHandler::create_event() {
     cin>>event_date;
     if (!is_valid_date(event_date)) {
         cout<<"Dată invalidă!"<<endl;
-        throw 1;
+        throw 2;
     }
 
     int product_count;
@@ -169,7 +169,7 @@ void EventHandler::create_event() {
         getline(cin, product_name);
         if(product_handler.search_product(product_name)==-1){
             cout<<"Produsul nu se află în gama magazinului!"<<endl;
-            throw 1;
+            throw 2;
         }
 
         cout<<"Introduceți cantitatea produsului: ";
@@ -201,7 +201,7 @@ Event EventHandler::search_event(string const &name, bool const display) {
     if (display) {
         cout<<"Eroare! Evenimentul nu a putut fi găsit!"<<endl;
     }
-    throw 1;
+    throw 7;
 }
 
 vector<Event> EventHandler::get_events_by_date(string date){

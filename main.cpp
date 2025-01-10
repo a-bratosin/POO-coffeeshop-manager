@@ -401,7 +401,100 @@ int main()
             break;
 
         case '4':
-            data_path += "iasi";
+        
+            // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
+            // în cazul de față, acest lucru este realizat de blocul din try
+            try
+            {
+                EventHandler event_handler(data_path);
+
+                selection = '0';
+                while (selection < '1' || selection > '4')
+                {
+
+                    cout << "Selectați operația dorită:" << endl;
+                    cout << "1) Adăugarea unui eveniment" << endl;
+                    cout << "2) Căutarea unui eveniment" << endl;
+                    cout << "2) Căutarea evenimentelor dintr-o anume zi" << endl;
+                    cin >> selection;
+
+                    switch (selection)
+                    {
+                    case '1':
+                        cin.clear();
+                        cin.ignore(100, '\n');
+                        event_handler.create_event();
+                        break;
+                    case '2':
+                    {
+                        cout << "Introduceți numele evenimentului căutat:" << endl;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        string event_name;
+                        getline(cin, event_name);
+                        Event searched_event = event_handler.search_event(event_name, true);
+                        searched_event.display_information();
+                        break;
+                    }
+                    
+                    case '3':
+                    {
+                        cout << "Introduceți data:" << endl;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        string date;
+                        getline(cin, date);
+                        vector<Event> searched_events = event_handler.get_events_by_date(date);
+                        
+                        
+                        for(int i=0; i<searched_events.size(); i++){
+                            searched_events[i].display_information();
+                        }
+                        break;
+                    }
+                    
+                    default:
+                        cout << "Selectați o opțiune validă!\n"
+                             << endl;
+                        break;
+                    }
+                }
+                cin.clear();
+                cin.ignore(100, '\n');
+
+                cout << "Doriți să exportați CSV-ul și în engleză? (d/n)";
+                char choice;
+                cin >> choice;
+                if (choice == 'd')
+                {
+                    convert_to_english(event_handler);
+                }
+            }
+            catch (int e)
+            {
+                switch (e)
+                {
+                case 1:
+                    cout << "Eroare la deschiderea fișierului de evenimente!" << endl;
+                    break;
+                case 2:
+                    cout << "Eroare la crearea evenimentului" << endl;
+                    break;
+                case 7:
+                    cout << "Eroare la căutarea evenimentului!" << endl;
+                    break;
+                
+                default:
+                    cout << "Eroare (foarte) tehnică! Ceva a mers foarte prost!" << endl;
+                    break;
+                }
+
+                break;
+            }
+    
+
             break;
         case '5':
             data_path += "brasov";
