@@ -41,7 +41,7 @@ int main()
         cout << "2) Cluj-Napoca" << endl;
         cout << "3) Timișoara" << endl;
         cout << "4) Iași" << endl;
-        cout << "5. Brașov" << endl;
+        cout << "5) Brașov" << endl;
         cin >> selection;
 
         switch (selection)
