@@ -87,7 +87,7 @@ void convert_to_english(EventHandler& handler) {
 
 template<>
 void convert_to_english(ProductHandler& handler) {
-    string header = "Name, Code, Price, Cost, Stockable, Stock";
+    string header = "Name,Code,Price,Cost,Stockable,Stock";
 
     vector<vector<string>> data = handler.get_data();
     
@@ -123,7 +123,7 @@ void convert_to_english(OrderHandler& handler) {
 
 template<>
 void convert_to_english(FinancialReportHandler& handler) {
-    string header = "Date,Wages,Product costs,Product revenues,Event revenues,Event costs,Total";
+    string header = "Date,Wages,Product costs,Product revenues,Event revenues,Event costs,Total expenses,Total Revenues,Net Revenue";
 
     vector<vector<string>> data = handler.get_data();
     
