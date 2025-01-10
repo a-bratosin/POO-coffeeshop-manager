@@ -9,6 +9,8 @@
 #include "products.h"
 #include "customers_orders.h"
 #include "handler.h"
+#include "check_date.h"
+
 
 #include "financial.h"
 
@@ -131,6 +133,9 @@ vector<string> FinancialReport::report_to_data() {
     return data;
 }
 
+string FinancialReport::get_date(){
+    return this->date;
+}
 
 // funcții aferente clasei FinancialReportHandler
 
@@ -184,6 +189,22 @@ void FinancialReportHandler::write_to_file(){
 
 void FinancialReportHandler::generate_report(string date){
     FinancialReport new_report(date, file_path);
-
+    new_report.display_report();
     reports.push_back(new_report);
+}
+//TODO: try/catch pt funcțiile din generarea de raport
+FinancialReport FinancialReportHandler::get_report_by_date(string date){
+    if(is_future_date(date)){
+        cout<<"Data introdusă este din viitor!"<<endl;
+        throw 3;
+    }
+
+    for(int i=0; i<reports.size(); i++){
+        if(date == reports[i].get_date()){
+            return reports[i];
+        }
+    }
+
+    cout<<"Nu a fost generat un raport pentru data introdusă!"<<endl;
+    throw 5;
 }

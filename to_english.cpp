@@ -123,7 +123,7 @@ void convert_to_english(OrderHandler& handler) {
 
 template<>
 void convert_to_english(FinancialReportHandler& handler) {
-    string header = "Wages,Product costs,Product revenues,Event revenues,Event costs,Total";
+    string header = "Date,Wages,Product costs,Product revenues,Event revenues,Event costs,Total";
 
     vector<vector<string>> data = handler.get_data();
     

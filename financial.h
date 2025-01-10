@@ -41,6 +41,8 @@ public:
     void display_report();
     vector<string> report_to_data();
 
+    string get_date();
+
 };
 
 class FinancialReportHandler: public Handler {
@@ -59,6 +61,8 @@ public:
     void write_to_file() override;
 
     void generate_report(string date);
+
+    FinancialReport get_report_by_date(string date);
 };
 
 #endif // FINANCIAL_H

@@ -325,7 +325,7 @@ int main()
                 OrderHandler order_handler(data_path);
 
                 selection = '0';
-                while (selection < '1' || selection > '4')
+                while (selection < '1' || selection > '2')
                 {
 
                     cout << "Selectați operația dorită:" << endl;
@@ -409,13 +409,13 @@ int main()
                 EventHandler event_handler(data_path);
 
                 selection = '0';
-                while (selection < '1' || selection > '4')
+                while (selection < '1' || selection > '3')
                 {
 
                     cout << "Selectați operația dorită:" << endl;
                     cout << "1) Adăugarea unui eveniment" << endl;
                     cout << "2) Căutarea unui eveniment" << endl;
-                    cout << "2) Căutarea evenimentelor dintr-o anume zi" << endl;
+                    cout << "3) Căutarea evenimentelor dintr-o anume zi" << endl;
                     cin >> selection;
 
                     switch (selection)
@@ -497,7 +497,90 @@ int main()
 
             break;
         case '5':
-            data_path += "brasov";
+            
+            // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
+            // în cazul de față, acest lucru este realizat de blocul din try
+            try
+            {
+                FinancialReportHandler financial_handler(data_path);
+
+                selection = '0';
+                while (selection < '1' || selection > '2')
+                {
+
+                    cout << "Selectați operația dorită:" << endl;
+                    cout << "1) Generare de raport"<<endl;
+                    cout << "2) Căutare de raport generat" << endl;
+                    
+                    cin >> selection;
+
+                    switch (selection)
+                    {
+                    case '1':
+                    {   
+                        cout << "Introduceți ziua pentru care vreți să generați raportul:" << endl;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        string date;
+                        getline(cin, date);
+                        financial_handler.generate_report(date);
+                        break;
+                    }
+                    case '2':
+                    {
+                        cout << "Introduceți ziua pentru care vreți să căutați raportul:" << endl;
+                        cin.clear();
+                        cin.ignore(100, '\n');
+
+                        string date;
+                        getline(cin, date);
+                        FinancialReport report = financial_handler.get_report_by_date(date);
+                        
+                        report.display_report();
+                        break;
+                    }
+                    
+                    default:
+                        cout << "Selectați o opțiune validă!\n"
+                             << endl;
+                        break;
+                    }
+                }
+                cin.clear();
+                cin.ignore(100, '\n');
+
+                cout << "Doriți să exportați CSV-ul și în engleză? (d/n)";
+                char choice;
+                cin >> choice;
+                if (choice == 'd')
+                {
+                    convert_to_english(financial_handler);
+                }
+            }
+            catch (int e)
+            {
+                switch (e)
+                {
+                case 1:
+                    cout << "Eroare la deschiderea fișierului de rapoarte generate!" << endl;
+                    break;
+                case 2:
+                    cout << "Eroare la generarea raportului!" << endl;
+                    break;
+                case 5:
+                    cout << "Eroare la căutarea raportului!" << endl;
+                    break;
+                
+                default:
+                    cout << "Eroare (foarte) tehnică! Ceva a mers foarte prost!" << endl;
+                    break;
+                }
+
+                break;
+            }
+
+
             break;
         default:
             cout << "Selectați o opțiune validă!\n"

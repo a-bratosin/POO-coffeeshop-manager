@@ -19,7 +19,7 @@ Product::Product(const string &name_in, const string &code_in, const float price
 
     if ((is_stockable_in == false) && (stock_in != -1)) {
         cout<<"Ați introdus un stoc pentru produs, cu toate că produsul nu are stoc definit. Acesta va fi ignorat."<<endl;
-        throw 3; // aici dau throw ptc nu ar trebui să se ajungă la codul ăsta în mod normal1
+        throw 11; // aici dau throw ptc nu ar trebui să se ajungă la codul ăsta în mod normal1
     }
     else {
         stock = stock_in;
@@ -215,7 +215,7 @@ void ProductHandler::remove_product(const string &name) {
     int index = search_product(name);
     if (index == -1) {
         cout<<"Produsul nu a putut fi găsit!"<<endl;
-        throw 5;
+        throw 2;
     }
     products.erase(products.begin() + index);
 
@@ -230,7 +230,7 @@ float ProductHandler::purchase_product(const string &name) {
     int product_index = search_product(name);
     if (product_index==-1) {
         cout<<"Produsul \""<<name<<"\" nu a putut fi găsit!"<<endl;
-        throw 6;
+        throw 2;
     }
 
     if (products[product_index].can_be_purchased()) {
@@ -247,7 +247,7 @@ float ProductHandler::search_cost(const string &name) {
     int product_index = search_product(name);
     if (product_index==-1) {
         cout<<"Produsul \""<<name<<"\" nu a putut fi găsit!"<<endl;
-        throw 6;
+        throw 2;
     }
     return products[product_index].get_price();
 }
@@ -256,7 +256,7 @@ void ProductHandler::reset_stock(const string &name, int stock) {
     int product_index = search_product(name);
     if (product_index==-1) {
         cout<<"Produsul \""<<name<<"\" nu a putut fi găsit!"<<endl;
-        throw 6;
+        throw 2;
     }
 
     if (products[product_index].get_is_stockable()) {

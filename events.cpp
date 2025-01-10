@@ -157,7 +157,7 @@ void EventHandler::create_event() {
         cout<<"Dată invalidă!"<<endl;
         throw 2;
     }
-
+    
     int product_count;
     cout<<"Introduceți numărul de produse oferite: "<<endl;
     std::cin>>product_count;
