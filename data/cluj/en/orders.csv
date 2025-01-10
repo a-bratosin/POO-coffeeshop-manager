@@ -1,6 +1,5 @@
-ID,Nume,Data,Numar produse,Produse,Total,Discount,Total final
+ID,Name,Date,Number of products,Products,Gross price,Loyalty discount,Net price
 1178011945,Bratosin Andrei,09/01/2025,1,Espresso,12.000000,0.000000,12.000000
 661645148,Bratosin Andrei,10/01/2025,1,Espresso,12.000000,0.000000,12.000000
 1078702642,Bratosin Andrei,09/01/2025,2,Espresso-aa,27.000000,0.100000,24.299999
 1258131255,Bratosin Andrei,10/01/2025,10,Espresso-Espresso-Espresso-Espresso-Espresso-Espresso-Espresso-Espresso-Espresso-Espresso,120.000000,0.100000,108.000000
-800992097,Bratosin Andrei,8/01/2025,3,Espresso-Espresso-Espresso,36.000000,0.100000,32.400002
