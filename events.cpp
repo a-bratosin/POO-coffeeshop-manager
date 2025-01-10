@@ -78,7 +78,7 @@ float Event::get_marketing_costs() {
 
 
 EventHandler::EventHandler(const string &file_path_in): Handler(file_path_in) {
-    event_file_path = file_path+"/events.csv";
+    event_file_path = file_path+"/ro/events.csv";
     EventHandler::parse_data();
 }
 EventHandler::~EventHandler(){

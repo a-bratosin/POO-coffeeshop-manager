@@ -72,7 +72,7 @@ vector<string> Employee::partial_employee_to_data() {
     for (int i=0; i<7; i++) {
         hours_string.append(to_string(hours[i].first));
         hours_string.append("-");
-        hours_string.append(to_string(hours[i].first));
+        hours_string.append(to_string(hours[i].second));
         if (i<6) {
             hours_string.append("/");
         }
@@ -198,7 +198,7 @@ Employee* EmployeeHandler::parse_data_element(const vector<string> &data_el){
         ManagerCreator creator;
         return creator.create_employee(name, pay, hours);
     }
-    if (data_el[0] == "Waiter") {
+    if (data_el[0] == "Ospatar") {
         WaiterCreator creator;
         return creator.create_employee(name, pay, hours);
     }
@@ -218,8 +218,10 @@ vector<vector<string>> EmployeeHandler::get_data() {
     CSVInputHandler csv_handler(employee_file_path);
     vector<vector<string>> data_in;
 
+
+    cout<<"Employees size: "<<employees.size()<<endl;
     for (int i=0; i<employees.size(); i++) {
-        data_in.push_back(employees[i]->employee_to_data());
+        data_in.push_back(this->employees[i]->employee_to_data());
     }
 
     return data_in;
@@ -254,8 +256,9 @@ void EmployeeHandler::add_employee() {
         int start_hour;
         int end_hour;
 
-        cin>>start_hour;
-        cin>>end_hour;
+        cin>>start_hour>>end_hour;
+
+        cout<<"Orele: "<<start_hour<<" - "<<end_hour<<endl;
 
         if (start_hour > end_hour) {
             cout<<"Interval orar invalid!"<<endl;

@@ -57,7 +57,7 @@ vector<string> CSVInputHandler::get_lines(){
 }
 
 
-// este mai ușor și ceva mai safe doar să comunic cu alte clase de parsing prin data, cum fiecare clasă în parte nu ar trebui să gestioneze decât transpunerea fiecărui câmp al clasei în string
+// este mai ușor doar să comunic cu alte clase de parsing prin data, cum fiecare clasă în parte nu ar trebui să gestioneze decât transpunerea fiecărui câmp al clasei în string
 // așa ar trebui să nu fiu nevoit să refolosesc cod
 vector<vector<string>> CSVInputHandler::get_data(){
     vector<vector<string>> data;
@@ -95,4 +95,8 @@ string CSVInputHandler::line_from_data(const vector<string> &data){
 
 void CSVInputHandler::append_line(const string& line){
     lines.push_back(line);
+}
+
+void CSVInputHandler::set_header(const string& header){
+    csv_header = header;
 }

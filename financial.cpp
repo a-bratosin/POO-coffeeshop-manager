@@ -131,7 +131,7 @@ vector<string> FinancialReport::report_to_data() {
 // funcții aferente clasei FinancialReportHandler
 
 FinancialReportHandler::FinancialReportHandler(const string &file_path_in): Handler(file_path_in) {
-    report_file_path = file_path+"/reports.csv";
+    report_file_path = file_path+"/ro/reports.csv";
     FinancialReportHandler::parse_data();
 }
 FinancialReportHandler::~FinancialReportHandler(){

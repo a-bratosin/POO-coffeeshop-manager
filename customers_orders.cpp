@@ -50,7 +50,7 @@ void Customer::display_information() {
 
 // funcțiile aferente clasei CustomerHandler
 CustomerHandler::CustomerHandler(const string &file_path_in): Handler(file_path_in) {
-    customer_file_path = file_path+"/customers.csv";
+    customer_file_path = file_path+"/ro/customers.csv";
     CustomerHandler::parse_data();
 }
 CustomerHandler::~CustomerHandler() {
@@ -214,7 +214,7 @@ vector<string> Order::get_product_names() {
 // funcțiile aferente clasei OrderHandler
 
 OrderHandler::OrderHandler(const string &file_path_in): Handler(file_path_in) {
-    order_file_path = file_path+"/orders.csv";
+    order_file_path = file_path+"/ro/orders.csv";
     OrderHandler::parse_data();
 }
 OrderHandler::~OrderHandler(){
