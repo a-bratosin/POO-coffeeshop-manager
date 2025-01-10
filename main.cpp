@@ -84,7 +84,112 @@ int main(){
 
         switch (selection) {
             case '1':
-                data_path+="bucuresti";;
+                try{
+                    EmployeeHandler employee_handler(data_path);
+
+                    selection='0';
+                    while (selection<'1' || selection>'4'){
+
+                        cout<<"Selectați operația dorită:"<<endl;
+                        cout<<"1) Adăugarea unui angajat"<<endl;
+                        cout<<"2) Căutarea unui angajat"<<endl;
+                        cout<<"3) Ștergerea unui angajat"<<endl;
+                        cout<<"4) Vizualizarea salariului"<<endl;
+                        cin>>selection;
+
+                        switch (selection) {
+                            case '1':
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                employee_handler.add_employee();
+                                break;
+                            case '2':
+                            {   
+                                cout<<"Introduceți numele angajatului căutat:"<<endl;
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                
+                                string employee_name;
+                                getline(cin, employee_name);
+                                employee_handler.search_employee(employee_name, true);
+                                break;
+                            }
+                            case '3':
+                            {   
+                                cout<<"Introduceți numele angajatului care trebuie șters:"<<endl;
+                                cin.clear();
+                                cin.ignore(100, '\n');
+
+                                string employee_name;
+                                getline(cin, employee_name);
+                                employee_handler.remove_employee(employee_name);
+                                break;
+                            }
+                            case '4':
+                            {   
+                                cin.clear();
+                                cin.ignore(100, '\n');
+                                cout<<"Introduceți numele angajatului pentru care vreți să calculați salariul:"<<endl;
+                                string employee_name;
+                                getline(cin, employee_name);
+                                cout<<"Introduceți nr. de ore lucrate:"<<endl;
+                                string hours_worked;
+                                cin>>hours_worked;
+
+                                // verific dacă stringul conține doar cifre
+                                if (has_only_digits(hours_worked)){
+                                    int new_stock = stoi(hours_worked);
+
+                                    employee_handler.get_salary(employee_name, 40, true);
+                                    
+                                }else{
+                                    cout<<"Numărul nu a fost bine introdus!"<<endl;
+                                    throw(5);
+                                }
+
+                                
+                                break;
+                            }
+                            
+
+                            default:
+                                cout<<"Selectați o opțiune validă!\n"<<endl;
+                                break;
+                        }
+
+                        
+                    }
+                    cin.clear();
+                    cin.ignore(100, '\n');
+
+                    cout<<"Doriți să exportați CSV-ul și în engleză? (d/n)";
+                    char choice;
+                    cin>>choice;
+                    if(choice == 'd'){
+                        convert_to_english(employee_handler);
+                    }
+                }catch(int e){
+                    switch(e){
+                        case 1:
+                            cout<<"Eroare la deschiderea fișierului de produse!"<<endl;
+                            break;
+                        case 2:
+                            cout<<"Eroare la căutarea angajatului!"<<endl;
+                            break;
+                        case 7:
+                            cout<<"Eroare la cumpărarea unui produs!"<<endl;
+                            break;
+                        case 8:
+                            cout<<"Eroare la gestionarea stocului!"<<endl;
+                            break;
+                        
+                        case 11:
+                            cout<<"Eroare (foarte) tehnică! Ceva a mers foarte prost!"<<endl;
+                            break;
+                    }
+
+                    break;
+                }
                 break;
             case '2':
             // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
@@ -177,6 +282,19 @@ int main(){
                     switch(e){
                         case 1:
                             cout<<"Eroare la deschiderea fișierului de produse!"<<endl;
+                            break;
+                        case 2:
+                            cout<<"Eroare la căutarea produsului!"<<endl;
+                            break;
+                        case 7:
+                            cout<<"Eroare la cumpărarea unui produs!"<<endl;
+                            break;
+                        case 8:
+                            cout<<"Eroare la gestionarea stocului!"<<endl;
+                            break;
+                        
+                        case 11:
+                            cout<<"Eroare (foarte) tehnică! Ceva a mers foarte prost!"<<endl;
                             break;
                     }
 

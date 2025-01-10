@@ -219,7 +219,7 @@ vector<vector<string>> EmployeeHandler::get_data() {
     vector<vector<string>> data_in;
 
 
-    cout<<"Employees size: "<<employees.size()<<endl;
+    //cout<<"Employees size: "<<employees.size()<<endl;
     for (int i=0; i<employees.size(); i++) {
         data_in.push_back(this->employees[i]->employee_to_data());
     }
