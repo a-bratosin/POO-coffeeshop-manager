@@ -351,6 +351,10 @@ float EmployeeHandler::get_weekly_pay(string name) {
 
 float EmployeeHandler::get_salary(string name, unsigned int hours_worked, bool display) {
     int employee_index = search_employee(name, false);
+    if(employee_index == -1){
+        cout<<"Angajatul dat nu a fost găsit în CSV!"<<endl;
+        throw 2;
+    }
     float net_salary = floor(employees[employee_index]->get_hourly_pay()*hours_worked*0.45);
     if (display) {
         cout<<"Pentru "<<hours_worked<<"ore lucrate, angajatul are un salariu brut de "<<floor(employees[employee_index]->get_hourly_pay()*hours_worked)<<" RON."<<endl;
