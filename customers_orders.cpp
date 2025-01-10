@@ -94,8 +94,8 @@ void CustomerHandler::write_to_file(){
 int CustomerHandler::search_customer(string const &name, bool const display) {
     for (int i=0; i<customers.size(); i++) {
         if (customers[i].get_name() == name) {
-            cout<<customers[i].get_name()<<endl;
-            cout<<name<<endl;
+            //cout<<customers[i].get_name()<<endl;
+            //cout<<name<<endl;
             if (display) {
                 cout<<"Clientul a fost găsit!"<<endl;
                 customers[i].display_information();
@@ -325,12 +325,12 @@ void OrderHandler::create_order() {
 
 // funcție care returnează toate comenzile făcute într-o anumită zi
 vector<Order> OrderHandler::get_orders_by_date(string date) {
-    vector<Order> orders;
+    vector<Order> new_orders;
     for (int i=0; i<orders.size(); i++) {
         if (orders[i].get_date() == date) {
-            orders.push_back(orders[i]);
+            new_orders.push_back(orders[i]);
         }
     }
-
-    return orders;
+    cout<<new_orders.size();
+    return new_orders;
 }
