@@ -302,9 +302,14 @@ void OrderHandler::create_order() {
         getline(cin, product_name);
         products.push_back(product_name);
     }
-    for (int i=0; i<product_count; i++) {
-        gross_price+=product_handler.purchase_product(products[i]);
+    try{
+        for (int i=0; i<product_count; i++) {
+            gross_price+=product_handler.purchase_product(products[i]);
+        }
+    }catch(int e){
+        throw 3; // 3 care corespunde unei erori la crearea comenzii
     }
+    
     cout<<"Costul total al comenzii este: "<<gross_price<<"RON"<<endl;
     cout<<"Introduceți numele clientului: "<<endl;
     getline(cin, customer_name);

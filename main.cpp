@@ -434,7 +434,7 @@ int main()
                         string event_name;
                         getline(cin, event_name);
                         Event searched_event = event_handler.search_event(event_name, true);
-                        searched_event.display_information();
+                        //searched_event.display_information();
                         break;
                     }
                     
@@ -571,7 +571,9 @@ int main()
                 case 5:
                     cout << "Eroare la căutarea raportului!" << endl;
                     break;
-                
+                case 3:
+                    cout << "Eroare la inserarea datei!"<<endl;
+                    break;
                 default:
                     cout << "Eroare (foarte) tehnică! Ceva a mers foarte prost!" << endl;
                     break;
