@@ -87,6 +87,7 @@ int main()
         switch (selection)
         {
         case '1':
+            // am nevoie să cuprind întregul switch case într-un try/catch pentru a putea prelua excepțiile care ar putea apărea
             try
             {
                 EmployeeHandler employee_handler(data_path);
@@ -199,6 +200,8 @@ int main()
             break;
 
         case '2':
+
+            // am nevoie să cuprind întregul switch case într-un try/catch pentru a putea prelua excepțiile care ar putea apărea
 
             // pentru a putea declara variabile în interiorul unui switch case, trebuie să definim un scop separat pt acesta
             // în cazul de față, acest lucru este realizat de blocul din try
@@ -606,37 +609,5 @@ int main()
         cin.clear();
         cin.ignore(100, '\n');
     }
-
-    /*
-    ProductHandler product_handler(data_path);
-    //product_handler.add_product();
-    product_handler.search_product("Sugar Cookie", true);
-    product_handler.reset_stock("Sugar Cookie", 20);
-    cout<<product_handler.purchase_product("Sugar Cookie")<<endl;
-    */
-
-    /*
-    OrderHandler order_handler(data_path);
-    order_handler.create_order();
-
-    cout<<"end"<<endl;
-    */
-
-    /*
-    EmployeeHandler employee_handler(data_path);
-    employee_handler.add_employee();
-    cout<<"end"<<endl;
-
-    test();
-
-    convert_to_english(employee_handler);
-    */
-    /*
-    EventHandler event_handler(data_path);
-    event_handler.create_event();
-    cout<<"end"<<endl;
-
-    convert_to_english(event_handler);
-    */
     return 0;
 }
