@@ -18,13 +18,16 @@
 
 // aici am doi constructori diferiți, în funcție de argumentele primite
 // un exemplu de polimorfism
-FinancialReport::FinancialReport(const string& date_in ,const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in) {
+FinancialReport::FinancialReport(const string& date_in ,const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in, const float total_expenses_in, const float total_revenue_in, const float net_total_in) {
     date = date_in;
     wages = wages_in;
     product_costs = product_costs_in;
     product_revenues = product_revenues_in;
     event_revenues = event_revenues_in;
     event_costs = event_costs_in;
+    total_expenses = total_expenses_in;
+    total_revenue = total_revenue_in;
+    net_total = net_total_in;
 }
 
 FinancialReport::FinancialReport(string date_in, string root_folder) {
@@ -59,7 +62,9 @@ FinancialReport::FinancialReport(string date_in, string root_folder) {
     wages = calculate_wages(date, root_folder);
 
 
-
+    total_expenses = product_costs + event_costs + wages;
+    total_revenue = product_revenues + event_revenues;
+    net_total = total_revenue - total_expenses;
 
 }
 
@@ -112,13 +117,14 @@ pair<float,float> FinancialReport::calculate_event_revenue_cost(string date, str
 }
 
 void FinancialReport::display_report() {
-    cout<<"Veniturile magazinului: "<<product_revenues<<endl;
+    cout<<"Veniturile magazinului: "<<total_revenue<<endl;
     cout<<" - Venituri din vânzări: "<<product_revenues<<endl;
     cout<<" - Venituri din evenimente: "<<event_revenues<<endl;
-    cout<<"Costurile magazinului: "<<product_costs<<endl;
+    cout<<"Costurile magazinului: "<<total_expenses<<endl;
     cout<<" - Salariile pentru ziua aceasta: "<<wages<<endl;
     cout<<" - Costuri aferente produselor: "<<product_costs<<endl;
     cout<<" - Costuri aferente evenimentelor: "<<event_costs<<endl;
+    cout<<"Venitul net al magazinului: "<<net_total<<endl;
 }
 
 vector<string> FinancialReport::report_to_data() {
@@ -129,7 +135,9 @@ vector<string> FinancialReport::report_to_data() {
     data.push_back(to_string(product_revenues));
     data.push_back(to_string(event_revenues));
     data.push_back(to_string(event_costs));
-
+    data.push_back(to_string(total_expenses));
+    data.push_back(to_string(total_revenue));
+    data.push_back(to_string(net_total));
     return data;
 }
 
@@ -157,7 +165,10 @@ FinancialReport FinancialReportHandler::parse_data_element(const vector<string> 
     const float product_revenues = stof(data_el[3]);
     const float event_revenues = stof(data_el[4]);
     const float event_costs = stof(data_el[5]);
-    return FinancialReport(date, wages, product_costs, product_revenues, event_revenues, event_costs);
+    const float total_expenses = stof(data_el[6]);
+    const float total_revenue = stof(data_el[7]);
+    const float net_total = stof(data_el[8]);
+    return FinancialReport(date, wages, product_costs, product_revenues, event_revenues, event_costs,total_expenses,total_revenue,net_total);
 }
 
 void FinancialReportHandler::parse_data(){
@@ -190,7 +201,15 @@ void FinancialReportHandler::write_to_file(){
 void FinancialReportHandler::generate_report(string date){
     FinancialReport new_report(date, file_path);
     new_report.display_report();
-    reports.push_back(new_report);
+
+    int previous_report_index = report_date_index(date);
+    if(previous_report_index!=-1){
+        cout<<"Deja a fost generat un raport. Se suprascrie..."<<endl;
+        reports[previous_report_index] = new_report;
+    }else{
+        reports.push_back(new_report);
+    }
+    
 }
 //TODO: try/catch pt funcțiile din generarea de raport
 FinancialReport FinancialReportHandler::get_report_by_date(string date){
@@ -207,4 +226,20 @@ FinancialReport FinancialReportHandler::get_report_by_date(string date){
 
     cout<<"Nu a fost generat un raport pentru data introdusă!"<<endl;
     throw 5;
+}
+
+int FinancialReportHandler::report_date_index(string date){
+     if(is_future_date(date)){
+        cout<<"Data introdusă este din viitor!"<<endl;
+        throw 3;
+    }
+
+    for(int i=0; i<reports.size(); i++){
+        if(date == reports[i].get_date()){
+            return i;
+        }
+    }
+
+    cout<<"Nu a fost generat un raport pentru data introdusă!"<<endl;
+    return -1;
 }

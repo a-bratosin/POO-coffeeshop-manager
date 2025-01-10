@@ -23,12 +23,14 @@ private:
     float product_revenues;
     float event_revenues;
     float event_costs;
-
+    float total_expenses;
+    float total_revenue;
+    float net_total;
 
 public:
     // aici am doi constructori diferiți, în funcție de argumentele primite
     // un exemplu de polimorfism
-    FinancialReport(const string& date, const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in);
+    FinancialReport(const string& date_in ,const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in, const float total_expenses_in, const float total_revenue_in, const float net_total_in);
 
     FinancialReport(string date, string root_folder);
 
@@ -63,6 +65,7 @@ public:
     void generate_report(string date);
 
     FinancialReport get_report_by_date(string date);
+    int report_date_index(string date);
 };
 
 #endif // FINANCIAL_H
