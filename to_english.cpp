@@ -7,8 +7,9 @@
 #include "events.h"
 #include "financial.h"
 #include "products.h"
-// creez o funcție de template care să se ocupe de traducerea unui document CSV
 
+// creez o funcție de template care să se ocupe de traducerea unui document CSV
+// specializez funcția asta pentru fiecare tip de Handler pe care îl am în codebase
 template <typename T>
 void convert_to_english(T &handler) {
 

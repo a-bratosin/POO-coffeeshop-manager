@@ -53,14 +53,20 @@ public:
 // clasă care citește și stochează datele despre produse, și care gestionează stocurile
 class ProductHandler : public Handler{
 private:
+    // acest string este complet abstractizat: chiar dacă operațiile de input/output sunt realizate în fișierul cu calea product_file_path, variabila în sine nu este vizibilă utilizatorului
     string product_file_path;
+
     vector<Product> products;
+
+    // de asemenea, această funcție este abstractizată: aceasta este o funcție intermediară folosită doar de clasa ProductHandler
+    // nu este vizibilă utilizatorului, oferindu-i astfel o interfață simplificată
+    Product parse_data_element(const vector<string> &data_el);
 public:
 
     explicit ProductHandler(const string &file_path_in);
     ~ProductHandler() override;
 
-    Product parse_data_element(const vector<string> &data_el);
+    
     void parse_data() override;
 
     vector<vector<string>> get_data() override;

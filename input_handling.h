@@ -13,7 +13,10 @@
 
 using namespace std;
 
+
 class CSVInputHandler{
+        // câmpurile clasei sunt încapsulate: aceste variabile nu sunt accesibile în afara clasei decât prin funcțiile publice ale clasei
+        
         private:
             string file_path;
             // în obiectul de input în sine păstrez liniile din fișier, nu datele

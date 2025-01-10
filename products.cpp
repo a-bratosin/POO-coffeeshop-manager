@@ -10,6 +10,7 @@ using namespace std;
 
 
 Product::Product(const string &name_in, const string &code_in, const float price_in, const float cost_in, const bool is_stockable_in, const int stock_in){
+    // câmpurile clasei sunt încapsulate: aceste variabile nu sunt accesibile în afara clasei decât prin funcțiile publice ale clasei
     name = name_in;
     code = code_in;
     price = price_in;

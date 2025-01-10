@@ -17,7 +17,7 @@
 // funcții aferente clasei FinancialReport
 
 // aici am doi constructori diferiți, în funcție de argumentele primite
-// un exemplu de polimorfism
+// un exemplu de method overloading, un tip de polimorfism
 FinancialReport::FinancialReport(const string& date_in ,const float wages_in, const float product_costs_in, const float product_revenues_in, const float event_revenues_in, const float event_costs_in, const float total_expenses_in, const float total_revenue_in, const float net_total_in) {
     date = date_in;
     wages = wages_in;

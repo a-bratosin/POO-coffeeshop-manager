@@ -16,6 +16,8 @@ class Handler {
 protected:
     string file_path;
 public:
+
+    // aici declar constructori, respectiv destructori ai clasei abstracte, care vor fi apoi extinși de către clasele moștenitoare
     virtual ~Handler() = default;
 
     explicit Handler(const string& file_path_in){

@@ -147,8 +147,11 @@ public:
 
 class EmployeeHandler : public Handler {
 private:
+    // acest string este complet abstractizat: chiar dacă operațiile de input/output sunt realizate în fișierul cu calea product_file_path, variabila în sine nu este vizibilă utilizatorului
     string employee_file_path;
 
+    
+    Employee* parse_data_element(const vector<string> &data_el);
 public:
     vector<Employee*> employees;
     explicit EmployeeHandler(const string &file_path_in): Handler(file_path_in) {
@@ -167,7 +170,7 @@ public:
         
     }
 
-    Employee* parse_data_element(const vector<string> &data_el);
+    
     void parse_data() override;
     vector<vector<string>> get_data() override;
 
